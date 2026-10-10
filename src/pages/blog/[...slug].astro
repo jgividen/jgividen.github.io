@@ -1,5 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Prose from '../../components/Prose.astro';
+import Tag from '../../components/Tag.astro';
+import Button from '../../components/Button.astro';
 import { render } from 'astro:content';
 import { getPosts, fmt } from '../../utils';
 export async function getStaticPaths() {
@@ -9,10 +12,21 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 <Base title={post.data.title} description={post.data.description}>
-<article>
-<h1>{post.data.title}</h1>
-<div class="meta">{fmt(post.data.pubDate)}{post.data.updatedDate && ` · Updated ${fmt(post.data.updatedDate)}`}
-{post.data.tags.map((t) => <a class="tag" href={`/tags/${t}/`}>{t}</a>)}</div>
-<Content />
+<article class="narrow">
+  <header class="post-head rise">
+    <p class="eyebrow">{fmt(post.data.pubDate)}{post.data.updatedDate && ` · Updated ${fmt(post.data.updatedDate)}`}</p>
+    <h1>{post.data.title}</h1>
+    <p class="lede">{post.data.description}</p>
+    <div class="tags">{post.data.tags.map((t) => <Tag href={`/tags/${t}/`}>{t}</Tag>)}</div>
+  </header>
+  <Prose><Content /></Prose>
+  <div class="back"><Button href="/" variant="ghost">← All posts</Button></div>
 </article>
 </Base>
+<style>
+.post-head { padding: var(--space-8) 0 var(--space-6); border-bottom: 1px solid var(--border); margin-bottom: var(--space-6); }
+.post-head h1 { font-size: var(--text-4xl); margin: var(--space-3) 0; }
+.lede { font-size: var(--text-lg); color: var(--text-muted); margin: 0 0 var(--space-4); }
+.tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.back { margin-top: var(--space-8); }
+</style>

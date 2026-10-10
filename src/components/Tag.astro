@@ -1,0 +1,15 @@
+---
+interface Props { href?: string; count?: number; tone?: 'accent' | 'neutral' }
+const { href, count, tone = 'accent' } = Astro.props;
+const El = href ? 'a' : 'span';
+---
+<El href={href} class:list={['tag', `tag--${tone}`]}>#<slot />{count !== undefined && <span class="count">{count}</span>}</El>
+<style>
+.tag { display: inline-flex; align-items: center; gap: .4em; font: 500 var(--text-xs)/1 var(--font-mono);
+  padding: .4em .75em; border-radius: var(--radius-pill); text-decoration: none; position: relative; z-index: 1;
+  transition: background-color var(--dur-fast), color var(--dur-fast); }
+.tag--accent { background: var(--accent-soft); color: var(--accent-strong); }
+.tag--neutral { background: var(--surface-2); color: var(--text-muted); }
+a.tag:hover { background: var(--accent); color: var(--on-accent); }
+.count { opacity: .75; }
+</style>

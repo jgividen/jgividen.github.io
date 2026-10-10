@@ -1,11 +1,6 @@
 ---
-import { fmt } from '../utils';
+import PostCard from './PostCard.astro';
 const { posts } = Astro.props;
 ---
-<ul class="posts">
-{posts.map((p: any) => (
-  <li><a href={`/blog/${p.id}/`}>{p.data.title}</a>
-  <div class="meta">{fmt(p.data.pubDate)}{p.data.tags.length > 0 && ' · '}{p.data.tags.map((t: string) => <a class="tag" href={`/tags/${t}/`}>{t}</a>)}</div>
-  <p>{p.data.description}</p></li>
-))}
-</ul>
+<div class="grid">{posts.map((p: any) => <PostCard post={p} />)}</div>
+<style>.grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }</style>

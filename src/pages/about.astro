@@ -1,9 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import Callout from '../components/Callout.astro';
+import Button from '../components/Button.astro';
 ---
 <Base title="About">
-<h1>About</h1>
-<p><strong>[Placeholder — replace with your own bio.]</strong></p>
-<p>Hi, I'm Jonathan Gividen. Write a few sentences here about who you are, what you do, and what you'll write about.</p>
-<p>Find me on <a href="https://github.com/jgividen">GitHub</a>.</p>
+<div class="narrow">
+  <div class="page-head"><p class="eyebrow">About</p><h1>Hi, I'm Jonathan Gividen.</h1></div>
+  <Callout type="note" title="Placeholder"><p>Replace this page with your own bio.</p></Callout>
+  <Prose>
+    <p>Write a few sentences here about who you are, what you do, and what you'll write about.</p>
+  </Prose>
+  <p class="cta"><Button href="https://github.com/jgividen" variant="secondary">Find me on GitHub</Button></p>
+</div>
 </Base>
+<style>.page-head { padding: var(--space-8) 0 var(--space-3); } .page-head h1 { font-size: var(--text-4xl); margin-top: var(--space-2); } .cta { margin-top: var(--space-6); }</style>
