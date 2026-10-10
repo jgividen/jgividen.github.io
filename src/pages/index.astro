@@ -1,7 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
 import PostList from '../components/PostList.astro';
+import Button from '../components/Button.astro';
 import { getPosts } from '../utils';
 const posts = await getPosts();
 ---
-<Base><h1>Recent posts</h1><PostList posts={posts} /></Base>
+<Base>
+  <section class="hero">
+    <div class="blob" aria-hidden="true"></div>
+    <p class="eyebrow rise">Notes · Essays · Experiments</p>
+    <h1 class="rise" style="animation-delay:60ms">Hi, I'm Jonathan.<br /><em>I write about what I'm building.</em></h1>
+    <p class="lede rise" style="animation-delay:120ms">A personal blog about software, the things I'm learning, and the occasional tangent.</p>
+    <div class="ctas rise" style="animation-delay:180ms">
+      {posts[0] && <Button href={`/blog/${posts[0].id}/`}>Read the latest →</Button>}
+      <Button href="/about/" variant="secondary">About me</Button>
+    </div>
+  </section>
+  <section aria-labelledby="recent">
+    <div class="section-head"><h2 id="recent">Recent posts</h2><a href="/tags/">Browse by tag →</a></div>
+    <PostList posts={posts} headingLevel={3} />
+  </section>
+</Base>
+<style>
+.hero { position: relative; isolation: isolate; padding: var(--space-9) 0 var(--space-8); }
+.hero h1 { font-size: var(--text-4xl); margin: var(--space-4) 0 var(--space-5); max-width: 16ch; font-variation-settings: 'opsz' 144, 'SOFT' 50; }
+.hero em { font-style: italic; color: var(--accent); font-weight: 500; }
+.lede { font-size: var(--text-lg); color: var(--text-muted); max-width: 38rem; margin: 0 0 var(--space-6); }
+.ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.blob { position: absolute; z-index: -1; right: -6rem; top: 1rem; width: 28rem; height: 28rem; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, transparent 65%); opacity: .18; filter: blur(30px); }
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-5); border-top: 1px solid var(--border); padding-top: var(--space-5); }
+.section-head h2 { margin: 0; }
+.section-head a { font-size: var(--text-sm); font-weight: 600; text-decoration: none; }
+@media (max-width: 40rem) { .hero { padding: var(--space-7) 0 var(--space-6); } .blob { width: 16rem; height: 16rem; right: -4rem; } }
+</style>

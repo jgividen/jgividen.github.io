@@ -9,4 +9,8 @@ export async function getStaticPaths() {
 }
 const { tag } = Astro.params; const { posts } = Astro.props;
 ---
-<Base title={`Tag: ${tag}`}><h1>Posts tagged “{tag}”</h1><PostList posts={posts} /></Base>
+<Base title={`Tag: ${tag}`}>
+  <div class="page-head"><p class="eyebrow">Tag</p><h1>#{tag}</h1><p class="muted">{posts.length} post{posts.length === 1 ? '' : 's'} · <a href="/tags/">All tags</a></p></div>
+  <PostList posts={posts} />
+</Base>
+<style>.page-head { padding: var(--space-8) 0 var(--space-5); } .page-head h1 { margin: var(--space-2) 0; }</style>

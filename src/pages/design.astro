@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Tag from '../components/Tag.astro';
+import Callout from '../components/Callout.astro';
+import Prose from '../components/Prose.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts } from '../utils';
+const [sample] = await getPosts();
+const colors = ['bg','surface','surface-2','text','text-muted','border','accent','accent-strong','accent-soft','link','info'];
+const palette = ['ink-950','ink-800','ink-500','ink-300','ink-100','ink-50','ember-700','ember-600','ember-400','ember-300','ember-100','teal-600'];
+const type = [['text-4xl','Display'],['text-3xl','Heading 1'],['text-2xl','Heading 2'],['text-xl','Heading 3'],['text-lg','Lede'],['text-base','Body text'],['text-sm','Small'],['text-xs','Caption']];
+const spaces = [1,2,3,4,5,6,7,8,9];
+const radii = ['sm','md','lg','pill']; const shadows = ['sm','md','lg'];
+---
+<Base title="Design system">
+  <div class="page-head"><p class="eyebrow">Styleguide</p><h1>Design system</h1>
+  <p class="muted">Tokens live in <code>src/styles/tokens.css</code>; components in <code>src/components/</code>. Toggle the theme to see dark mode.</p></div>
+
+  <section><h2>Semantic colors</h2><div class="swatches">{colors.map(c => <div class="sw"><div class="chip" style={`background:var(--${c})`}></div><code>--{c}</code></div>)}</div></section>
+  <section><h2>Palette</h2><div class="swatches">{palette.map(c => <div class="sw"><div class="chip" style={`background:var(--${c})`}></div><code>--{c}</code></div>)}</div></section>
+
+  <section><h2>Typography</h2>
+    <p class="muted">Display: <strong>Fraunces</strong> · Body: <strong>Inter</strong> · Code: <strong>JetBrains Mono</strong></p>
+    {type.map(([t, l], i) => <div class="type-row"><code>--{t}</code><span style={`font-size:var(--${t});font-family:var(--font-${i < 4 ? 'display' : 'body'});line-height:1.15;font-weight:${i<4?600:400}`}>{l}</span></div>)}
+  </section>
+
+  <section><h2>Spacing</h2>{spaces.map(s => <div class="space-row"><code>--space-{s}</code><div class="bar" style={`width:var(--space-${s})`}></div></div>)}</section>
+
+  <section><h2>Radii &amp; shadows</h2><div class="boxes">
+    {radii.map(r => <div class="box" style={`border-radius:var(--radius-${r})`}><code>radius-{r}</code></div>)}
+    {shadows.map(s => <div class="box" style={`box-shadow:var(--shadow-${s});border-color:transparent`}><code>shadow-{s}</code></div>)}
+  </div><p class="muted">Motion: <code>--dur-fast</code> 120ms · <code>--dur-base</code> 220ms · <code>--dur-slow</code> 480ms, <code>--ease-out</code>. All collapse to 0 under <code>prefers-reduced-motion</code>.</p></section>
+
+  <section><h2>Buttons</h2><div class="row">
+    <Button>Primary</Button><Button variant="secondary">Secondary</Button><Button variant="ghost">Ghost</Button><Button size="sm">Small</Button>
+  </div></section>
+
+  <section><h2>Tags</h2><div class="row"><Tag href="/tags/">astro</Tag><Tag count={3}>notes</Tag><Tag tone="neutral">neutral</Tag></div></section>
+
+  <section><h2>Post card</h2><div class="card-demo">{sample && <PostCard post={sample} headingLevel={3} />}</div></section>
+
+  <section><h2>Callouts</h2>
+    <Callout type="note" title="Note"><p>Neutral information for the reader.</p></Callout>
+    <Callout type="tip" title="Tip"><p>A helpful suggestion, in the accent color.</p></Callout>
+    <Callout type="warning" title="Warning"><p>Something to be careful about.</p></Callout>
+  </section>
+
+  <section><h2>Prose</h2><div class="narrow" style="margin:0"><Prose>
+    <h2>A section heading</h2>
+    <p>Body copy sits at a comfortable measure with <a href="/about/">inline links</a>, <strong>bold text</strong> and <code>inline code</code>.</p>
+    <blockquote>A pull quote, set in the display face.</blockquote>
+    <ul><li>List item one</li><li>List item two</li></ul>
+    <pre class="astro-code" style="background:var(--code-bg);color:var(--code-text)"><code>const greet = (name) =&gt; `Hello, ${'{'}name{'}'}!`;</code></pre>
+  </Prose></div></section>
+</Base>
+<style>
+.page-head { padding: var(--space-8) 0 var(--space-3); } .page-head h1 { font-size: var(--text-4xl); margin-top: var(--space-2); }
+section { padding: var(--space-5) 0; border-top: 1px solid var(--border); }
+section > h2 { margin-top: 0; }
+code { font: var(--text-sm) var(--font-mono); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: var(--space-4); }
+.chip { height: 4rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: var(--space-2); }
+.type-row, .space-row { display: grid; grid-template-columns: 9rem 1fr; align-items: center; gap: var(--space-4); padding: var(--space-2) 0; }
+.bar { height: 1rem; background: var(--accent); border-radius: 3px; }
+.boxes { display: flex; flex-wrap: wrap; gap: var(--space-5); margin-bottom: var(--space-4); }
+.box { width: 8rem; height: 6rem; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.card-demo { max-width: 26rem; }
+</style>

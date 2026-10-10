@@ -1,0 +1,32 @@
+---
+import Tag from './Tag.astro';
+import { fmt } from '../utils';
+interface Props { post: any; featured?: boolean; headingLevel?: 2 | 3 | 4 }
+const { post, featured = false, headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+<article class:list={['card', { featured }]}>
+  <p class="eyebrow"><time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time></p>
+  <H class="title"><a href={`/blog/${post.id}/`}>{post.data.title}</a></H>
+  <p class="desc">{post.data.description}</p>
+  <div class="foot">
+    <div class="tags">{post.data.tags.map((t: string) => <Tag href={`/tags/${t}/`}>{t}</Tag>)}</div>
+    <span class="arrow" aria-hidden="true">→</span>
+  </div>
+</article>
+<style>
+.card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-5) var(--space-4); box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base), border-color var(--dur-base); }
+.card:hover, .card:focus-within { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.card .title { margin: var(--space-2) 0; font-size: var(--text-xl); }
+.featured .title { font-size: var(--text-2xl); }
+.card .title a { color: var(--text); text-decoration: none; }
+.card .title a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.desc { color: var(--text-muted); margin: 0 0 var(--space-4); }
+.foot { display: flex; justify-content: space-between; align-items: center; }
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.arrow { color: var(--accent); font-size: var(--text-lg); transition: transform var(--dur-base) var(--ease-out); }
+.card:hover .arrow { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .card:hover, .card:focus-within, .card:hover .arrow { transform: none; } }
+</style>
