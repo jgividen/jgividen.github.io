@@ -25,7 +25,7 @@ img { max-width: 100%; height: auto; }
 .narrow { max-width: var(--width-content); margin: 0 auto; }
 .eyebrow { font: 600 var(--text-xs)/1 var(--font-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--accent-strong); }
 .muted { color: var(--text-muted); }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: -999px; } .skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; background: var(--surface); padding: var(--space-2) var(--space-4); }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 .rise { animation: rise var(--dur-slow) var(--ease-out) both; }

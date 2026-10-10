@@ -1,6 +1,7 @@
 ---
 import PostCard from './PostCard.astro';
-const { posts } = Astro.props;
+interface Props { posts: any[]; headingLevel?: 2 | 3 | 4 }
+const { posts, headingLevel = 2 } = Astro.props;
 ---
-<div class="grid">{posts.map((p: any) => <PostCard post={p} />)}</div>
+<div class="grid">{posts.map((p: any) => <PostCard post={p} headingLevel={headingLevel} />)}</div>
 <style>.grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }</style>
