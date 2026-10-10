@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../utils';
+const posts = await getPosts();
+const counts = new Map<string, number>();
+posts.forEach((p) => p.data.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+const tags = [...counts].sort((a, b) => a[0].localeCompare(b[0]));
+---
+<Base title="Tags"><h1>Tags</h1>
+<p>{tags.map(([t, n]) => <a class="tag" href={`/tags/${t}/`}>{t} ({n})</a>)}</p></Base>

@@ -1,0 +1,11 @@
+---
+import { fmt } from '../utils';
+const { posts } = Astro.props;
+---
+<ul class="posts">
+{posts.map((p: any) => (
+  <li><a href={`/blog/${p.id}/`}>{p.data.title}</a>
+  <div class="meta">{fmt(p.data.pubDate)}{p.data.tags.length > 0 && ' · '}{p.data.tags.map((t: string) => <a class="tag" href={`/tags/${t}/`}>{t}</a>)}</div>
+  <p>{p.data.description}</p></li>
+))}
+</ul>

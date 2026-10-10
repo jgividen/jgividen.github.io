@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jgividen.github.io/sitemap-index.xml
