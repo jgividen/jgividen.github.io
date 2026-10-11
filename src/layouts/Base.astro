@@ -3,8 +3,9 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-interface Props { title?: string; description?: string; fullTitle?: string }
-const { title, description = SITE_DESCRIPTION, fullTitle: ft } = Astro.props;
+interface Props { title?: string; description?: string; fullTitle?: string; ogImage?: string; ogType?: 'website' | 'article' }
+const { title, description = SITE_DESCRIPTION, fullTitle: ft, ogImage = '/og-default.png', ogType = 'website' } = Astro.props;
+const ogImageUrl = new URL(ogImage, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = ft ?? (title ? `${title} · ${SITE_TITLE}` : SITE_TITLE);
 ---
@@ -14,9 +15,10 @@ const fullTitle = ft ?? (title ? `${title} · ${SITE_TITLE}` : SITE_TITLE);
 <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>{fullTitle}</title><meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-<meta property="og:type" content="website" /><meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:type" content={ogType} /><meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} />
-<meta property="og:url" content={canonical} /><meta name="twitter:card" content="summary" />
+<meta property="og:url" content={canonical} /><meta property="og:image" content={ogImageUrl} /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content={ogImageUrl} />
 <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <script is:inline>

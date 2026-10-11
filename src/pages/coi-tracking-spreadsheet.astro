@@ -27,13 +27,13 @@ const file = '/downloads/coi-tracking-spreadsheet.xlsx';
 
   <section class="lp-section" id="download" aria-labelledby="dl">
     <h2 id="dl">Get the spreadsheet</h2>
-    <form class="lp-form" data-form data-endpoint={TEMPLATE_ENDPOINT} data-download={file} data-reveal="dl-link">
+    <form class="lp-form" data-form data-endpoint={TEMPLATE_ENDPOINT} method="post" action={TEMPLATE_ENDPOINT || undefined} data-download={file} data-reveal="dl-link">
       <input type="hidden" name="_form" value="coi-template-download" />
       <input type="hidden" name="_subject" value="COI spreadsheet download" />
-      <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+      <label>Email <span class="opt">(required)</span><input type="email" name="email" required aria-describedby="tp-status" autocomplete="email" /></label>
       <Button type="submit">Email me &amp; download</Button>
-      <p class="lp-status" data-status role="status" aria-live="polite"></p>
-      <a id="dl-link" href={file} download hidden>Download didn’t start? Get the XLSX file</a>
+      <p class="lp-status" id="tp-status" data-status role="status" aria-live="polite"></p>
+      <a id="dl-link" class="js-hide" href={file} download>Download the XLSX file directly</a>
     </form>
   </section>
 

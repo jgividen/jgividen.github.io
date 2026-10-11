@@ -29,7 +29,7 @@ const steps = [
     <h2 id="problem">Expired certificates cost real money</h2>
     <ul class="lp-grid">
       <li class="lp-card"><h3>Certificates quietly expire</h3><p>A sub’s policy lapses mid-project and nobody notices until something goes wrong.</p></li>
-      <li class="lp-card"><h3>Year-end audit charges</h3><p>If you can’t show a current certificate for a sub, your insurer’s audit may treat them as uninsured and charge you premium for their payroll.</p></li>
+      <li class="lp-card"><h3>Year-end audit charges</h3><p>If you can’t show a current certificate for a sub, your insurer’s year-end audit may charge you premium for that sub’s payroll.</p></li>
       <li class="lp-card"><h3>Endless email chasing</h3><p>Spreadsheets, inbox searches, and calls to agents eat hours every month.</p></li>
     </ul>
   </section>
@@ -60,10 +60,10 @@ const steps = [
   <section class="lp-section" id="waitlist" aria-labelledby="waitlist-title">
     <p class="eyebrow">Waitlist</p>
     <h2 id="waitlist-title">Get early access</h2>
-    <form class="lp-form" data-form data-endpoint={WAITLIST_ENDPOINT}>
+    <form class="lp-form" data-form data-endpoint={WAITLIST_ENDPOINT} method="post" action={WAITLIST_ENDPOINT || undefined}>
       <input type="hidden" name="_form" value="subvault-waitlist" />
       <input type="hidden" name="_subject" value="SubVault waitlist signup" />
-      <label>Work email <input type="email" name="email" required autocomplete="email" /></label>
+      <label>Work email <span class="opt">(required)</span><input type="email" name="email" required aria-describedby="wl-status" autocomplete="email" /></label>
       <label>Company <span class="opt">(optional)</span><input type="text" name="company" autocomplete="organization" /></label>
       <label>Roughly how many subs do you work with? <span class="opt">(optional)</span>
         <select name="subs"><option value="">Choose a range</option><option>1–5</option><option>6–25</option><option>26–50</option><option>51–200</option><option>200+</option></select>
@@ -72,7 +72,8 @@ const steps = [
         <select name="role"><option value="">Choose a role</option><option>General contractor</option><option>Subcontractor</option><option>Property manager</option><option>Owner / developer</option><option>Insurance agent / broker</option><option>Other</option></select>
       </label>
       <Button type="submit">Join the waitlist</Button>
-      <p class="lp-status" data-status role="status" aria-live="polite"></p>
+      {!WAITLIST_ENDPOINT && <noscript><p class="lp-fine">Signup is opening soon. Check back shortly!</p></noscript>}
+      <p class="lp-status" id="wl-status" data-status role="status" aria-live="polite"></p>
     </form>
   </section>
 </Base>

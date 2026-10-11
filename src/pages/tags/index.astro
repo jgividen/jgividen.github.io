@@ -7,7 +7,7 @@ const counts = new Map<string, number>();
 posts.forEach((p) => p.data.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
 const tags = [...counts].sort((a, b) => a[0].localeCompare(b[0]));
 ---
-<Base title="Tags">
+<Base title="Tags" description="Browse every topic on Jonathan Gividen’s blog by tag.">
   <div class="page-head"><p class="eyebrow">Index</p><h1>Tags</h1></div>
   <div class="cloud">{tags.map(([t, n]) => <Tag href={`/tags/${t}/`} count={n}>{t}</Tag>)}</div>
 </Base>

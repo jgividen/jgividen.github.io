@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 ---
-<Base title={post.data.title} description={post.data.description}>
+<Base title={post.data.title} description={post.data.description} ogType="article">
 <article class="narrow">
   <header class="post-head rise">
     <p class="eyebrow">{fmt(post.data.pubDate)}{post.data.updatedDate && ` · Updated ${fmt(post.data.updatedDate)}`}</p>

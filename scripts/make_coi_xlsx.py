@@ -1,5 +1,5 @@
 """Generate public/downloads/coi-tracking-spreadsheet.xlsx. Run: python3 scripts/make_coi_xlsx.py"""
-from datetime import date, timedelta
+from datetime import date  # example dates are fixed so the file is reproducible
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.formatting.rule import FormulaRule
@@ -14,11 +14,10 @@ for c in ws[1]:
     c.font = Font(bold=True, color="FFFFFF"); c.fill = PatternFill("solid", fgColor="1D1A17")
     c.alignment = Alignment(wrap_text=True, vertical="center")
 ws.row_dimensions[1].height = 32
-t = date.today()
 ex = [
-  ["EXAMPLE – Acme Electric","Electrical","Dana Lee, 555-0100","agent@example.com","Example Mutual",1000000,t+timedelta(200),t+timedelta(150),t+timedelta(300),"Y","Y","Y","EL-12345",t+timedelta(400)],
-  ["EXAMPLE – Bright Plumbing","Plumbing","Sam Ortiz, 555-0101","agent2@example.com","Sample Casualty",2000000,t+timedelta(20),t+timedelta(90),None,"Y","N","Y","PL-67890",t+timedelta(365)],
-  ["EXAMPLE – Cedar Framing","Framing","Kim Park, 555-0102","agent3@example.com","Demo Insurance Co.",1000000,t-timedelta(10),t+timedelta(60),t+timedelta(60),"N","N","N","",None],
+  ["EXAMPLE – Acme Electric","Electrical","Dana Lee, 555-0100","agent@example.com","Example Mutual",1000000,date(2028, 7, 20),date(2028, 5, 31),date(2028, 10, 28),"Y","Y","Y","EL-12345",date(2029, 2, 5)],
+  ["EXAMPLE – Bright Plumbing","Plumbing","Sam Ortiz, 555-0101","agent2@example.com","Sample Casualty",2000000,date(2026, 1, 21),date(2026, 4, 1),None,"Y","N","Y","PL-67890",date(2027, 1, 1)],
+  ["EXAMPLE – Cedar Framing","Framing","Kim Park, 555-0102","agent3@example.com","Demo Insurance Co.",1000000,date(2025, 12, 22),date(2026, 3, 2),date(2026, 3, 2),"N","N","N","",None],
 ]
 for r in ex: ws.append(r)
 for r in range(2, N + 2):
