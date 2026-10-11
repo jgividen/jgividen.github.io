@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Callout from '../components/Callout.astro';
+import { TEMPLATE_ENDPOINT } from '../config/forms';
+import '../styles/landing.css';
+const file = '/downloads/coi-tracking-spreadsheet.xlsx';
+---
+<Base fullTitle="Free Certificate of Insurance Tracking Spreadsheet (Excel Template)"
+  description="Download a free certificate of insurance tracking spreadsheet. Track GL, workers’ comp and auto expiry dates, W-9s and licenses, with automatic Expired / Expiring / OK status.">
+  <section class="lp-hero" aria-labelledby="t">
+    <p class="eyebrow">Free template</p>
+    <h1 id="t">Certificate of insurance tracking spreadsheet</h1>
+    <p class="lede">A free Excel template for tracking subcontractor COIs, W-9s and licenses. Status updates on its own, so you can see at a glance which certificates are expired or expiring in the next 30 days.</p>
+  </section>
+
+  <section class="lp-section" aria-labelledby="inside">
+    <h2 id="inside">What’s inside</h2>
+    <ul class="lp-cols">
+      <li>Sub name, trade, contact and agent email</li><li>GL carrier and GL limit</li>
+      <li>GL, workers’ comp and auto expiry dates</li><li>Additional insured and endorsement on file (Y/N)</li>
+      <li>W-9 on file</li><li>License number and expiry</li>
+      <li>Status formula: Expired / Expiring in 30 days / OK</li><li>Red, amber and green color coding</li>
+    </ul>
+    <p class="lp-fine">Works in Excel, LibreOffice and Google Sheets (File → Import). Example rows are clearly labeled; delete them before use.</p>
+  </section>
+
+  <section class="lp-section" id="download" aria-labelledby="dl">
+    <h2 id="dl">Get the spreadsheet</h2>
+    <form class="lp-form" data-form data-endpoint={TEMPLATE_ENDPOINT} data-download={file} data-reveal="dl-link">
+      <input type="hidden" name="_form" value="coi-template-download" />
+      <input type="hidden" name="_subject" value="COI spreadsheet download" />
+      <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+      <Button type="submit">Email me &amp; download</Button>
+      <p class="lp-status" data-status role="status" aria-live="polite"></p>
+      <a id="dl-link" href={file} download hidden>Download didn’t start? Get the XLSX file</a>
+    </form>
+  </section>
+
+  <section class="lp-section" aria-labelledby="sv">
+    <h2 id="sv">Outgrowing the spreadsheet?</h2>
+    <Callout type="tip" title="Meet SubVault">
+      <p>SubVault collects certificates through a no-login link, checks each one against your requirements, and reminds subs and their agents before expiry. <a href="/subvault/">Join the SubVault waitlist</a>.</p>
+    </Callout>
+  </section>
+</Base>
+<script>import '../scripts/forms';</script>

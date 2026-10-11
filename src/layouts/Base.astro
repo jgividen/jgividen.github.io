@@ -3,16 +3,20 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-interface Props { title?: string; description?: string }
-const { title, description = SITE_DESCRIPTION } = Astro.props;
-const fullTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
+interface Props { title?: string; description?: string; fullTitle?: string }
+const { title, description = SITE_DESCRIPTION, fullTitle: ft } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = ft ?? (title ? `${title} · ${SITE_TITLE}` : SITE_TITLE);
 ---
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>{fullTitle}</title><meta name="description" content={description} />
-<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" /><meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} /><meta name="twitter:card" content="summary" />
 <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <script is:inline>
