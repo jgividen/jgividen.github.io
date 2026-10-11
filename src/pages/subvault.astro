@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Callout from '../components/Callout.astro';
+import { WAITLIST_ENDPOINT } from '../config/forms';
+import '../styles/landing.css';
+// With no endpoint, render a plain container so a no-JS submit can't POST to GitHub Pages (405).
+const FormTag = WAITLIST_ENDPOINT ? 'form' : 'div';
+const steps = [
+  ['Send subs a link', 'Each subcontractor gets an upload link. No account, no login, no app to install.'],
+  ['AI reads the certificate', 'SubVault pulls carriers, policy limits, and expiry dates out of the uploaded certificate for you.'],
+  ['Checks it against your requirements', 'You set the minimum limits and endorsements per project. SubVault flags whether each certificate meets your requirements.'],
+  ['Reminds before expiry', 'Automatic reminders go to the sub and their insurance agent before a policy expires, so you are not the one chasing.'],
+  ['One-click audit export', 'When the year-end audit comes, export every sub’s documents and status in one file.'],
+];
+---
+<Base fullTitle="SubVault: COI Tracking Software for Contractors & Property Managers"
+  description="SubVault is COI tracking software for contractors and property managers. Collect certificates of insurance through a no-login link, check each one against your requirements, and get reminders before expiry.">
+  <section class="lp-hero" aria-labelledby="hero-title">
+    <p class="eyebrow">SubVault · Early access</p>
+    <h1 id="hero-title">Stop chasing subcontractor insurance certificates.</h1>
+    <p class="lede">COI tracking software for general contractors and property managers. Collect certificates, W-9s, licenses and lien waivers in one place, and know which certificates meet your requirements before the job starts.</p>
+    <div class="lp-actions">
+      <Button href="#waitlist">Join the waitlist</Button>
+      <Button href="/coi-tracking-spreadsheet/" variant="secondary">Get the free COI spreadsheet</Button>
+    </div>
+  </section>
+
+  <section class="lp-section" aria-labelledby="problem">
+    <p class="eyebrow">The problem</p>
+    <h2 id="problem">Expired certificates cost real money</h2>
+    <ul class="lp-grid">
+      <li class="lp-card"><h3>Certificates quietly expire</h3><p>A sub’s policy lapses mid-project and nobody notices until something goes wrong.</p></li>
+      <li class="lp-card"><h3>Year-end audit charges</h3><p>If you can’t show a current certificate for a sub, your insurer’s year-end audit may charge you premium for that sub’s payroll.</p></li>
+      <li class="lp-card"><h3>Endless email chasing</h3><p>Spreadsheets, inbox searches, and calls to agents eat hours every month.</p></li>
+    </ul>
+  </section>
+
+  <section class="lp-section" aria-labelledby="how">
+    <p class="eyebrow">How it works</p>
+    <h2 id="how">From upload to audit-ready</h2>
+    <ol class="lp-grid">
+      {steps.map(([t, d], i) => <li class="lp-card"><span class="lp-step">Step {i + 1}</span><h3>{t}</h3><p>{d}</p></li>)}
+    </ol>
+    <Callout type="note" title="More than insurance certificates">
+      <p>SubVault also tracks W-9s, subcontractor licenses and expiry dates, and lien waivers alongside each sub’s certificates.</p>
+    </Callout>
+    <p class="lp-fine">SubVault checks whether a certificate meets your requirements. It does not confirm coverage with the carrier; for that, contact the issuing agent or insurer.</p>
+  </section>
+
+  <section class="lp-section" aria-labelledby="pricing">
+    <p class="eyebrow">Pricing preview · Early access</p>
+    <h2 id="pricing">Simple pricing (preview)</h2>
+    <ul class="lp-grid">
+      <li class="lp-card"><h3>Free</h3><p class="lp-price">$0</p><p>Up to 5 subs.</p></li>
+      <li class="lp-card highlight"><h3>Pro</h3><p class="lp-price">$59 <small>/ month</small></p><p>Up to 50 subs.</p></li>
+      <li class="lp-card"><h3>Unlimited</h3><p class="lp-price">$99 <small>/ month</small></p><p>Unlimited subs, plus lien waiver tracking.</p></li>
+    </ul>
+    <p class="lp-fine">Preview pricing for early access. Final plans may change before launch.</p>
+  </section>
+
+  <section class="lp-section" id="waitlist" aria-labelledby="waitlist-title">
+    <p class="eyebrow">Waitlist</p>
+    <h2 id="waitlist-title">Get early access</h2>
+    <FormTag class="lp-form" data-form data-endpoint={WAITLIST_ENDPOINT} method={WAITLIST_ENDPOINT ? "post" : undefined} action={WAITLIST_ENDPOINT || undefined}>
+      <input type="hidden" name="_form" value="subvault-waitlist" />
+      <input type="hidden" name="_subject" value="SubVault waitlist signup" />
+      <label>Work email <span class="opt">(required)</span><input type="email" name="email" required aria-describedby="wl-status" autocomplete="email" /></label>
+      <label>Company <span class="opt">(optional)</span><input type="text" name="company" autocomplete="organization" /></label>
+      <label>Roughly how many subs do you work with? <span class="opt">(optional)</span>
+        <select name="subs"><option value="">Choose a range</option><option>1–5</option><option>6–25</option><option>26–50</option><option>51–200</option><option>200+</option></select>
+      </label>
+      <label>Your role <span class="opt">(optional)</span>
+        <select name="role"><option value="">Choose a role</option><option>General contractor</option><option>Subcontractor</option><option>Property manager</option><option>Owner / developer</option><option>Insurance agent / broker</option><option>Other</option></select>
+      </label>
+      <Button type="submit">Join the waitlist</Button>
+      {!WAITLIST_ENDPOINT && <noscript><p class="lp-fine">Signup is opening soon. Check back shortly!</p></noscript>}
+      <p class="lp-status" id="wl-status" data-status role="status" aria-live="polite"></p>
+    </FormTag>
+  </section>
+</Base>
+<script>import '../scripts/forms';</script>
