@@ -4,6 +4,8 @@ import Button from '../components/Button.astro';
 import Callout from '../components/Callout.astro';
 import { WAITLIST_ENDPOINT } from '../config/forms';
 import '../styles/landing.css';
+// With no endpoint, render a plain container so a no-JS submit can't POST to GitHub Pages (405).
+const FormTag = WAITLIST_ENDPOINT ? 'form' : 'div';
 const steps = [
   ['Send subs a link', 'Each subcontractor gets an upload link. No account, no login, no app to install.'],
   ['AI reads the certificate', 'SubVault pulls carriers, policy limits, and expiry dates out of the uploaded certificate for you.'],
@@ -60,7 +62,7 @@ const steps = [
   <section class="lp-section" id="waitlist" aria-labelledby="waitlist-title">
     <p class="eyebrow">Waitlist</p>
     <h2 id="waitlist-title">Get early access</h2>
-    <form class="lp-form" data-form data-endpoint={WAITLIST_ENDPOINT} method="post" action={WAITLIST_ENDPOINT || undefined}>
+    <FormTag class="lp-form" data-form data-endpoint={WAITLIST_ENDPOINT} method={WAITLIST_ENDPOINT ? "post" : undefined} action={WAITLIST_ENDPOINT || undefined}>
       <input type="hidden" name="_form" value="subvault-waitlist" />
       <input type="hidden" name="_subject" value="SubVault waitlist signup" />
       <label>Work email <span class="opt">(required)</span><input type="email" name="email" required aria-describedby="wl-status" autocomplete="email" /></label>
@@ -74,7 +76,7 @@ const steps = [
       <Button type="submit">Join the waitlist</Button>
       {!WAITLIST_ENDPOINT && <noscript><p class="lp-fine">Signup is opening soon. Check back shortly!</p></noscript>}
       <p class="lp-status" id="wl-status" data-status role="status" aria-live="polite"></p>
-    </form>
+    </FormTag>
   </section>
 </Base>
 <script>import '../scripts/forms';</script>

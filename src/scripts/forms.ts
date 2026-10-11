@@ -1,6 +1,9 @@
 // Progressive form handler for [data-form] elements.
-document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => {
-  form.noValidate = true; // we validate in submit so aria-invalid can be set
+// [data-form] is a <form> when an endpoint is configured, otherwise a plain <div> (no no-JS submit).
+document.querySelectorAll<HTMLElement>('[data-form]').forEach((form) => {
+  const isForm = form instanceof HTMLFormElement;
+  if (isForm) form.noValidate = true; // we validate in submit so aria-invalid can be set
+  const fields = () => Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input[name], select[name]'));
   const status = form.querySelector<HTMLElement>('[data-status]')!;
   const endpoint = form.dataset.endpoint || '';
   const download = form.dataset.download;
@@ -14,9 +17,10 @@ document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => 
     if (link) { link.hidden = false; link.focus(); }
     if (download) { const a = document.createElement('a'); a.href = download; a.download = ''; document.body.append(a); a.click(); a.remove(); }
   };
-  form.addEventListener('submit', async (e) => {
+  const onSubmit = async (e: Event) => {
     e.preventDefault();
-    if (!form.checkValidity()) { email?.setAttribute('aria-invalid', 'true'); form.reportValidity(); return; }
+    const bad = fields().find((f) => !f.checkValidity());
+    if (bad) { email?.setAttribute('aria-invalid', 'true'); bad.reportValidity(); return; }
     email?.removeAttribute('aria-invalid');
     const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (!endpoint) {
@@ -27,10 +31,10 @@ document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => 
     if (btn) btn.disabled = true;
     say('Sending…', 'info');
     try {
-      const data = Object.fromEntries(new FormData(form).entries());
+      const data = Object.fromEntries(fields().map((f) => [f.name, f.value]));
       const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
       if (!res.ok) throw new Error(String(res.status));
-      form.reset();
+      fields().forEach((f) => { if (f.type !== 'hidden') f.value = ''; });
       say(download ? 'Thanks! Your download is starting.' : "You're on the list. We'll be in touch.", 'success');
       if (download) reveal();
     } catch {
@@ -38,5 +42,10 @@ document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => 
       say("We couldn't send that. Check your connection and try again.", 'error');
       if (download) { status.append(' Or '); const a = document.createElement('a'); a.href = download; a.download = ''; a.textContent = 'download the spreadsheet directly'; status.append(a, '.'); }
     } finally { if (btn) btn.disabled = false; }
-  });
+  };
+  if (isForm) form.addEventListener('submit', onSubmit);
+  else {
+    form.querySelector('button[type="submit"]')?.addEventListener('click', onSubmit);
+    form.querySelectorAll('input').forEach((i) => i.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') onSubmit(e); }));
+  }
 });
